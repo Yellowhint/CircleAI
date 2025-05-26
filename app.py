@@ -1,4 +1,9 @@
+from dotenv import load_dotenv
 import os
+
+load_dotenv()  # Loads variables from .env
+
+openai_api_key = os.getenv("OPENAI_API_KEY")  # Reads your key from the .env fileimport os
 from flask import Flask, request, jsonify
 import openai
 
