@@ -31,10 +31,12 @@ def chat():
         return jsonify({"reply": reply})
     except Exception as e:
         return jsonify({"reply": f"Error: {str(e)}"})
-
 @app.route("/")
 def home():
-    return "Backend is running!"
+    return """
+    <h1>Welcome to CircleAI!</h1>
+    <p>The backend is running and you can start building your app.</p>
+    """
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
