@@ -38,21 +38,30 @@
       userMessage.textContent = "You: " + message;
       chatBox.appendChild(userMessage);
 
+      // Show "thinking..." while waiting for backend
       const botMessage = document.createElement("div");
       botMessage.className = "chat-message bot";
-      botMessage.textContent = "Circle AI: " + getBotReply(message);
+      botMessage.textContent = "Circle AI: ...";
       chatBox.appendChild(botMessage);
 
       input.value = "";
       chatBox.scrollTop = chatBox.scrollHeight;
-    }
 
-    function getBotReply(message) {
-      const msg = message.toLowerCase();
-      if (msg.includes("hello") || msg.includes("hi")) return "Hi there! How can I help you today?";
-      if (msg.includes("name")) return "I'm Circle AI, your assistant.";
-      if (msg.includes("help")) return "Sure! Ask me anything or say 'menu' to see options.";
-      return "I'm still learning! Try asking something else.";
+      // Send message to backend
+      fetch("http://localhost:5000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+      })
+        .then(res => res.json())
+        .then(data => {
+          botMessage.textContent = "Circle AI: " + data.reply;
+          chatBox.scrollTop = chatBox.scrollHeight;
+        })
+        .catch(() => {
+          botMessage.textContent = "Circle AI: Error contacting backend.";
+          chatBox.scrollTop = chatBox.scrollHeight;
+        });
     }
   </script>
 
